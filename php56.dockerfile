@@ -15,7 +15,7 @@ RUN	apk --no-cache --no-progress upgrade -f && \
 	php5-dev php5-pear autoconf build-base && \
 	pear config-set php_ini /etc/php5/conf.d/xdebug.ini && \
 	touch /etc/php5/conf.d/xdebug.ini && \
-	php /usr/share/pear/peclcmd.php install xdebug && \
+	php /usr/share/pear/peclcmd.php install xdebug-2.5.5 && \
 	rm -rf /tmp/pear && \
 	apk --no-progress --force del pecl-build-tools && \
 	COMPOSER_INSTALLER=$(wget -q -O- https://getcomposer.org/installer) && \
