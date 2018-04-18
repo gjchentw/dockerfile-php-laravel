@@ -21,6 +21,7 @@ RUN	apk --no-cache --no-progress upgrade -f && \
 	mkdir -p /app/public && mv /app/index.php /app/public
 
 COPY	nginx_laravel_server.conf /etc/nginx/conf.d/default.conf
+COPY	php7.php-fpm-www.conf /etc/php7/php-fpm-www.conf
 
 ENV	PHP_ERROR_LOG=syslog \
 	PHP_LOG_ERRORS=1 \
