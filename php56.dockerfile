@@ -2,7 +2,7 @@ FROM gjchen/php56
 MAINTAINER gjchen <gjchen.tw@gmail.com>
 
 RUN	apk --no-cache --no-progress upgrade -f && \
-	apk --no-cache --no-progress add coreutils ca-certificates \
+	apk --no-cache --no-progress add coreutils ca-certificates gettext \
 	php5-ctype \
 	php5-dom \
 	php5-json \
@@ -23,8 +23,11 @@ RUN	apk --no-cache --no-progress upgrade -f && \
 	echo "${COMPOSER_INSTALLER}" | php -- --install-dir=/usr/bin &&\
 	mkdir -p /app/public && mv /app/index.php /app/public
 
-COPY	nginx_laravel_server.conf /etc/nginx/conf.d/default.conf
+COPY	nginx_laravel_server.conf /etc/nginx/conf.d/default.template
 COPY	php5.php-fpm-www.conf /etc/php5/php-fpm-www.conf
+
+RUN	APP="/app" envsubst '$APP' < /etc/nginx/conf.d/default.template > /etc/nginx/conf.d/default.conf
+
 
 ENV	PHP_ERROR_LOG=syslog \
 	PHP_LOG_ERRORS=1 \
@@ -56,6 +59,5 @@ ENV	PHP_ERROR_LOG=syslog \
 	PHP_XDEBUG_REMOTE_PORT=9000 \
 	PHP_XDEBUG_REMOTE_HANDLER=dbgp
 
-VOLUME	["/app"]
 EXPOSE	80
 
